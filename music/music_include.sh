@@ -3,8 +3,6 @@
 DIRNAME="`dirname $0`"
 . "$DIRNAME"/../utils.sh
 
-check_dep totem-video-indexer totem
-
 urlencode() {
     sed -e's/./&\n/g' -e's/ /%20/g' | grep -v '^$' |\
      while read CHAR
@@ -17,21 +15,35 @@ urlencode() {
 }
 
 
+is_mp3() {
+    FILE="$1"
+    file "$FILE" | grep -i audio | grep -i ID3 >/dev/null 2>/dev/null
+}
+
+is_ogg() {
+    FILE="$1"
+    file "$FILE" | grep -i audio| grep -i Vorbis >/dev/null 2>/dev/null
+}
+
 get_tag() {
     FILE="$2"
     TAG="$1"
-    totem-video-indexer "$FILE" |grep "^TOTEM_INFO_$TAG="|sed 's/^[^=]*=//' #| iconv -f latin1 -t utf8
+    if [ "$TAG" == ALBUM_ARTIST ] || [ "$TAG" == TRACKTOTAL ]; then
+	get_tag_avconv "$TAG" "$FILE"
+    else
+	totem-video-indexer "$FILE" |grep "^TOTEM_INFO_$TAG="|sed 's/^[^=]*=//' #| iconv -f latin1 -t utf8
+    fi
 }
 
-get_tag_ffmpeg() {
+get_tag_avconv() {
     FILE="$2"
     TAG="$1"
-    ffmpeg -i "$FILE" 2>&1 |grep -i "^ *$TAG *:"|sed 's/^[^:]*: *//' | iconv -f latin1 -t utf8
+    avconv -i "$FILE" 2>&1 |grep -i "^ *$TAG *:"|sed 's/^[^:]*: *//' #| iconv -f latin1 -t utf8
 }
 
 get_tag_lltag() {
     FILE="$2"
     TAG="$1"
     lltag --mp3v2 --mp3read=2 --show-tags "$TAG" "$FILE"|grep "$TAG" |\
-        cut -d= -f 2 | iconv -f latin1 -t utf8
+        cut -d= -f 2 #| iconv -f latin1 -t utf8
 }

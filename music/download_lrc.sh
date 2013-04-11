@@ -29,6 +29,8 @@ fi
 
 . "`dirname $0`"/music_include.sh
 
+check_dep totem-video-indexer totem
+
 red="\E[31m"
 
 TMP=/tmp/`basename $0`.html

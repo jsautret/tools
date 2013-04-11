@@ -303,7 +303,7 @@ case $1 in
             sleep 1
             simulerAppui power
 	fi
-	break
+	exit 0
         ;;
      rebootHD)
 	preDisplay 151
@@ -320,7 +320,7 @@ case $1 in
 	    sleep 60
             simulerAppui power
 	fi
-	break
+	exit 0
 	;;
      rebootOffHD)
 	preDisplay 1
@@ -329,7 +329,7 @@ case $1 in
         simulerAppui power
         sleep 5
         exec $0 rebootOnHD
-	break
+	exit 0
 	;;
      rebootOnHD)
 	preDisplay 72
@@ -338,7 +338,7 @@ case $1 in
         redemarrerHDSiOn
 	sleep 60
         simulerAppui power
-	break
+	exit 0
 	;;
     *)
 	echo "$HELP" >&2

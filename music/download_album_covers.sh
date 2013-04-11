@@ -32,6 +32,8 @@ export LANG=C
 
 check_dep wget wget
 check_dep convert imagemagick
+check_dep totem-video-indexer totem
+
 
 
 valid_image() {
