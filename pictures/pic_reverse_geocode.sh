@@ -10,9 +10,11 @@ Usage:
 $PROGNAME [-l CITY COUNTRY COUNTRY_CODE]  FILE.jpg [FILES.jpg...]
 
 Add location tags (if missing) to pictures by geodecoding the GPS
-coordinates embedded in the Exif tags. If no GPS coordinates are
-present in the file, use command line parameters CITY, COUNTRY
-and COUNTRY_CODE in -l parameter is present.
+coordinates embedded in the Exif tags.
+
+If no GPS coordinates are present in the file or geodecoding cannot
+find the location, use command line parameters CITY, COUNTRY and
+COUNTRY_CODE instead, if -l parameter is present.
 
 $PROGNAME -d FILE.jpg [FILES.jpg...]
 
@@ -130,18 +132,30 @@ do
 	set +o errexit
 	COUNTRY="`get_component country long`"
 	if [ $? != 0  ] ; then
-	    echo "no country found" >&2
-	    continue
+	    if [ -n "$UCOUNTRY"  ] ; then
+		COUNTRY=$UCOUNTRY
+	    else
+		echo "no country found" >&2
+		continue
+	    fi
 	fi
 	COUNTRY_CODE="`get_component country short`"
 	if [ $? != 0  ] ; then
-	    echo "no country code found" >&2
-	    continue
+	    if [ -n "$UCOUNTRY_CODE"  ] ; then
+		COUNTRY_CODE=$UCOUNTRY_CODE
+	    else
+		echo "no country code found" >&2
+		continue
+	    fi
 	fi
 	CITY="`get_component locality long`"
 	if [ $? != 0  ] ; then
-	    echo "no city found" >&2
-	    continue
+	    if [ -n "$UCITY"  ] ; then
+		CITY=$UCITY
+	    else
+		echo "no city found" >&2
+		continue
+	    fi
 	fi
 	set -o errexit
     else
