@@ -32,8 +32,8 @@ export LANG=C
 
 check_dep wget wget
 check_dep convert imagemagick
-check_dep totem-video-indexer totem
-
+#check_dep totem-video-indexer totem
+check_dep avconv libav-tools
 
 
 valid_image() {

@@ -25,7 +25,7 @@ is_ogg() {
     file "$FILE" | grep -i audio| grep -i Vorbis >/dev/null 2>/dev/null
 }
 
-get_tag() {
+get_tag_totem() {
     FILE="$2"
     TAG="$1"
     if [ "$TAG" == ALBUM_ARTIST ] || [ "$TAG" == TRACKTOTAL ]; then
@@ -33,6 +33,12 @@ get_tag() {
     else
 	totem-video-indexer "$FILE" |grep "^TOTEM_INFO_$TAG="|sed 's/^[^=]*=//' #| iconv -f latin1 -t utf8
     fi
+}
+
+get_tag() {
+    FILE="$2"
+    TAG="$1"
+    get_tag_avconv "$TAG" "$FILE"
 }
 
 get_tag_avconv() {

@@ -29,7 +29,8 @@ fi
 
 . "`dirname $0`"/music_include.sh
 
-check_dep totem-video-indexer totem
+#check_dep totem-video-indexer totem
+check_dep avconv libav-tools
 
 red="\E[31m"
 

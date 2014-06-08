@@ -38,8 +38,9 @@ do
     mkvmerge -i "$F"
     TRACK=`LC_ALL=C mkvmerge -i "$F" | grep ^Track | grep DTS |sed 's/^Track ID \(.\):.*$/\1/'`
     if [[ a$TRACK == a ]] ; then
-	echo "No DTS track found." 1>&2
-	exit 1
+	echo "No DTS track found in $F, skipping." 1>&2
+	echo 1>&2
+	continue
     fi
     mkvextract tracks "$F" $TRACK:$TMP.dts
     dcadec -o wavall $TMP.dts 2>/dev/null| aften -b 640 - $TMP.ac3

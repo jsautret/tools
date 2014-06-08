@@ -14,17 +14,18 @@ Perform common operations recursively on a music directory tree:
 Fix errors and gain, download album art cover, embed it into files and
 download lrc files.
 
-Link it into ~/.gnome2/nautilus-scripts to use it from Nautilus.
-"
+Link it into /home/$USER/.local/share/nautilus/scripts/ to use it from
+Nautilus. "
+
 ###########################################################################
 
+if [ a$NAUTILUS_SCRIPT_CURRENT_URI != a ] ; then
+    exec gnome-terminal --geometry=115x20 --hide-menubar --execute `readlink "$0"` "`pwd`"
+fi
+
 if [[ a$1 == a ]] ; then
-    if [ a$NAUTILUS_SCRIPT_CURRENT_URI != a ] ; then
-	exec gnome-terminal --geometry=115x20 --hide-menubar --execute `readlink "$0"` "`pwd`"
-    else
 	echo "$HELP" >&2
 	exit 1
-    fi
 fi
 
 export PATH="$PATH:`dirname $0`"

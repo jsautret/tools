@@ -35,15 +35,15 @@ DIRNAME="`dirname $0`"
 . "$DIRNAME"/../utils.sh
 
 check_dep exiv2 exiv2
-check_dep jshon jshon
+check_dep exiftool libimage-exiftool-perl
 
 echo
 echo "Setting author name: $NAME"
-exiv2 \
-    -M "set Exif.Image.Artist \"Photographer, $NAME\"" \
-    -M "del Xmp.dc.creator" \
-    -M "set Xmp.dc.creator \"$NAME\"" \
-    "$@"
+#exiv2 \
+#    -M "set Exif.Image.Artist \"Photographer, $NAME\"" \
+#    -M "del Xmp.dc.creator" \
+#    -M "set Xmp.dc.creator \"$NAME\"" \
+exiftool -artist="$NAME" -if '$model eq "NEX-5N"' "$@"
 
 exiv2 fixiso "$@"
 echo
